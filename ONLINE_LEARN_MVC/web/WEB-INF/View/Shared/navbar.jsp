@@ -17,7 +17,7 @@
         <div class="navbar-nav ms-auto p-4 p-lg-0">
             <a href="<%=ConstValue.CONTEXT_PATH%>/Home" class="nav-item nav-link">Home</a>
             <a href="<%=ConstValue.CONTEXT_PATH%>/About" class="nav-item nav-link">About</a>
-            <a href="<%=ConstValue.CONTEXT_PATH%>/ManagerCourse/Create" class="nav-item nav-link <%=d_none1%>">Create Course</a>
+            <a href="<%=ConstValue.CONTEXT_PATH%>/MyTeachingCourse/Create" class="nav-item nav-link <%=d_none1%>">Create Course</a>
             <%  // if not login or login as student
                 if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
             %>
@@ -29,7 +29,7 @@
     <%  // if not login
         if (user == null) {
     %>
-    <a href="/Login" class="btn btn-info py-4 px-lg-5 d-none d-lg-block text-white">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+    <a href="<%=ConstValue.CONTEXT_PATH%>/Login" class="btn btn-info py-4 px-lg-5 d-none d-lg-block text-white">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
         <%} else {%>
     <div class="nav-item dropdown">
         <a href="#" class="btn btn-info py-4 px-lg-5 text-white"><img src="<%=user.getImage()%>" alt="Avatar" class="avatar">  <%=user.getUsername()%></a>
