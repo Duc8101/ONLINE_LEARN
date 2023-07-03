@@ -2,6 +2,7 @@ package Model;
 
 import Const.ConstValue;
 import Entity.Course;
+import Entity.EnrollCourse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -79,4 +80,61 @@ public class DAOCourse extends ConnectDatabase {
         }
         return list;
     }
+
+    public List<Course> getListCourse(int UserID, String role) {
+        List<Course> listCourse = new ArrayList<>();
+        if (role.equals(ConstValue.ROLE_STUDENT)) {
+            DAOEnrollCourse daoEnroll = new DAOEnrollCourse();
+            List<EnrollCourse> listEnroll = daoEnroll.getListEnrollCourse(UserID);
+            for (EnrollCourse enroll : listEnroll) {
+                Course course = this.getCourse(enroll.getCourseID());
+                if (course != null) {
+                    listCourse.add(course);
+                }
+            }
+        } else {
+            String sql = "SELECT * FROM [dbo].[Course]\n"
+                    + "where [UserID] = " + UserID;
+            ResultSet result = getData(sql);
+            try {
+                if (result.next()) {
+                    int CourseID = result.getInt(1);
+                    String CourseName = result.getString(2);
+                    String image = result.getString(3);
+                    double price = result.getDouble(4);
+                    int CategoryID = result.getInt(5);
+                    String description = result.getString(7);
+                    Course course = new Course(CourseID, CourseName, image, price, CategoryID, UserID, description);
+                    listCourse.add(course);
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex.getMessage());
+            }
+        }
+        return listCourse;
+    }
+
+    public Course getCourse(int CourseID) {
+        String sql = "SELECT * FROM [dbo].[Course]\n"
+                + "where [CourseID] = " + CourseID;
+        // get data
+        ResultSet result = getData(sql);
+        try {
+            // if get data successful
+            if (result.next()) {
+                String CourseName = result.getString(2);
+                String image = result.getString(3);
+                double price = result.getDouble(4);
+                int CategoryID = result.getInt(5);
+                int UserID = result.getInt(6);
+                String description = result.getString(7);
+                Course course = new Course(CourseID, CourseName, image, price, CategoryID, UserID, description);
+                return course;
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
+    }
+
 }

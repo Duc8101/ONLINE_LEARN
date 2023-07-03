@@ -1,9 +1,8 @@
 package Controller;
 
 import Const.ConstValue;
-import Entity.Course;
-import Entity.User;
-import Model.DAOCourse;
+import Entity.*;
+import Model.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,10 @@ import org.springframework.web.portlet.ModelAndView;
 public class CoursesController {
 
     private final DAOCourse daoCourse = new DAOCourse();
+    private final DAOCategory daoCategory = new DAOCategory();
+    private final DAOEnrollCourse daoEnroll = new DAOEnrollCourse();
+    private final DAOLesson daoLesson = new DAOLesson();
+    private final DAOUser daoUser = new DAOUser();
 
     private Map<String, Object> getData(int CategoryID, int pageSelected, String properties, String flow) {
         Map<String, Object> map = new HashMap<>();
@@ -44,15 +47,20 @@ public class CoursesController {
                 nextURL = nextURL + "?CategoryID=" + CategoryID + "&properties=" + properties + "&flow=" + flow + "&page=" + nextPageSelected;
             }
         }
-        List<Course> list = this.daoCourse.getListCourse(CategoryID, pageSelected, properties, flow);
+        List<Course> listCourse = this.daoCourse.getListCourse(CategoryID, pageSelected, properties, flow);
+        List<Category> listCategory = this.daoCategory.getAllCategory();
         map.put("number", numberPage);
         map.put("pageSelected", pageSelected);
         map.put("flow", flow);
         map.put("properties", properties);
-        map.put("list", list);
+        map.put("listCourse", listCourse);
         map.put("CategoryID", CategoryID);
         map.put("previous", preURL);
         map.put("next", nextURL);
+        map.put("listCategory", listCategory);
+        map.put("daoLesson", this.daoLesson);
+        map.put("daoCourse", this.daoCourse);
+        map.put("daoUser", this.daoUser);
         return map;
     }
 
@@ -62,6 +70,10 @@ public class CoursesController {
         if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
             int pageSelected = page == 0 ? 1 : page;
             Map<String, Object> map = this.getData(CategoryID, pageSelected, properties, flow);
+            if (user != null) {
+                List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
+                map.put("listEnroll", listEnroll);
+            }
             return new ModelAndView("Courses/Index", map);
         }
         return new ModelAndView(ConstValue.REDIRECT + "/Error");
