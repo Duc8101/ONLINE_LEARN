@@ -62,8 +62,9 @@
                 <div class="row">
                     <div class="col-2 border">
                         <div class="list-group mt-2" >
+                             <a  class="py-3 list-group-item list-group-item-action ${CategoryID == 0 ? "active" : ""}" href="<%=ConstValue.CONTEXT_PATH%>/Courses">ALL</a>
                             <c:forEach var="category" items="${listCategory}">
-                                <a  class="py-3 list-group-item list-group-item-action ${category.getID() == CategoryID ? "active" : ""}" href="<%=ConstValue.CONTEXT_PATH%>/Courses?CategoryID=${category.getID()}">${category.getName}</a>
+                                <a  class="py-3 list-group-item list-group-item-action ${category.getID() == CategoryID ? "active" : ""}" href="<%=ConstValue.CONTEXT_PATH%>/Courses?CategoryID=${category.getID()}">${category.getName()}</a>
                             </c:forEach>
                         </div>
                     </div>
@@ -84,64 +85,56 @@
                         </form>
 
                         <div class="row g-4 justify-content-center">
-                            <%
-                                for (Course course : listCoursePage) {
-                                    boolean IsExist = false;
-                                    Teacher teacher = daoTeacher.getTeacher(course.getTeacherID());
-                                    List<Lesson> listLesson = daoLesson.GetListLesson(course.getCourseID());
-                            %>
-                            <div class="col-lg-4 col-md-6 wow fadeInDown" data-wow-delay="0.1s">
-                                <div class="course-item bg-light">
-                                    <div class="position-relative overflow-hidden">
-                                        <div style="height: 240px">
-                                            <img class="img-fluid w-100" src="<%=course.getImage()%>" alt="">
-                                        </div> 
-                                        <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                            <a href="Courses?service=Detail&CourseID=<%=course.getCourseID()%>" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
-                                               style="border-radius: 30px <%=listLesson.isEmpty() ? "" : "0 0"%> 30px;">Read More
-                                            </a>
-                                            <% // if login
-                                                if (listCourseUser != null) {
-                                                    for (Course courseUser : listCourseUser) {
-                                                        // if exist student learn course
-                                                        if (courseUser.getCourseID() == course.getCourseID()) {
-                                                            IsExist = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                                // if exist student learn course and exist lesson in course
-                                                if (IsExist && !listLesson.isEmpty()) {
-                                            %>
-                                            <form action="Courses">
-                                                <input type="hidden" name="service" value="LearnCourse">
-                                                <input type="hidden" name="CourseID" value="<%=course.getCourseID()%>">
-                                                <input type="submit" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;" value="Learn Course">
-                                            </form>
-                                            <%  // if not exist student learn course and exist lesson in course
-                                            } else if (!listLesson.isEmpty()) {
-                                            %>
-                                            <a href="Courses?service=RegisterCourse&CourseID=<%=course.getCourseID()%>" class="flex-shrink-0 btn btn-sm btn-primary px-3" 
-                                               style="border-radius: 0 30px 30px 0;">Register Course</a>
-                                            <%}%>
+                            <c:forEach var="course" items="${listCourse}">
+                                <c:set var="isExist" value="false"></c:set>
+                                <c:set var="teacher" value="${daoUser.getUser(course.getUserID())}"></c:set>
+                                <c:set var="listLesson" value="${daoLesson.getListLesson(course.getCourseID())}"></c:set>
+                                    <div class="col-lg-4 col-md-6 wow fadeInDown" data-wow-delay="0.1s">
+                                        <div class="course-item bg-light">
+                                            <div class="position-relative overflow-hidden">
+                                                <div style="height: 240px">
+                                                    <img class="img-fluid w-100" src="${course.getImage()}" alt="">
+                                            </div> 
+                                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                                                <a href="<%=ConstValue.CONTEXT_PATH%>/Courses/Detail?CourseID=${course.getCourseID()}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
+                                                   style="border-radius: 30px ${listLesson.isEmpty() ? "" : "0 0"} 30px;">Read More
+                                                </a>
+                                                <!-- if login -->
+                                                <c:if test="${sessionScope.user != null}">
+                                                    <c:forEach var="cour" items="${listEnroll}">
+                                                        <c:if test="${cour.getCourseID() == course.getCourseID()}">
+                                                            <c:set var="isExist" value="true"></c:set>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:if>
+
+                                                <!--if exist student learn course and exist lesson in course -->
+                                                <c:if test="${isExist && !listLesson.isEmpty()}">
+                                                    <form action="<%=ConstValue.CONTEXT_PATH%>/Courses/LearnCourse">
+                                                        <input type="hidden" name="CourseID" value="${course.getCourseID()}">
+                                                        <input type="submit" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;" value="Learn Course">
+                                                    </form>
+                                                </c:if>
+                                                <!--if not exist student learn course and exist lesson in course -->
+                                                <c:if test="${!isExist && !listLesson.isEmpty()}">
+                                                    <a href="<%=ConstValue.CONTEXT_PATH%>/Courses/EnrollCourse?CourseID=${course.getCourseID()}" class="flex-shrink-0 btn btn-sm btn-primary px-3" 
+                                                       style="border-radius: 0 30px 30px 0;">Enroll Course</a>
+                                                </c:if>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="text-center p-4 pb-0">
-                                        <div class="mb-1">
+                                        <div class="text-center p-4 pb-0">
+                                            <div class="mb-1">
 
+                                            </div>
+                                            <h5 class="mb-2">${course.getCourseName().length() <= 24 ? course.getCourseName() : course.getCourseName().substring(0, 24)}${course.getCourseName().length() <= 24 ? "" : "..."}</h5>
                                         </div>
-                                        <h5 class="mb-2"><%= course.getCourseName().length() <= 24 ? course.getCourseName() : course.getCourseName().substring(0, 24) + "..."%></h5>
-                                        <h3 class="mb-2">$<%=course.getPrice()%></h3>
-
-                                    </div>
-                                    <div class="d-flex border-top">
-                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i><%=teacher.getFullName()%></small>
+                                        <div class="d-flex border-top">
+                                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${teacher.getFullName()}</small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <%}%>
-
+                            </c:forEach>
                             <c:if test="${listCourse.size() != 0}">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination justify-content-center">

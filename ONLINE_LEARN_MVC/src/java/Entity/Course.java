@@ -5,7 +5,6 @@ public class Course {
     private int CourseID;
     private String CourseName;
     private String image;
-    private double price;
     private int CategoryID;
     private int UserID;
     private String description;
@@ -13,11 +12,10 @@ public class Course {
     public Course() {
     }
 
-    public Course(int CourseID, String CourseName, String image, double price, int CategoryID, int UserID, String description) {
+    public Course(int CourseID, String CourseName, String image, int CategoryID, int UserID, String description) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.image = image;
-        this.price = price;
         this.CategoryID = CategoryID;
         this.UserID = UserID;
         this.description = description;
@@ -26,7 +24,6 @@ public class Course {
     public Course(String CourseName, String image, double price, int CategoryID, int UserID, String description) {
         this.CourseName = CourseName;
         this.image = image;
-        this.price = price;
         this.CategoryID = CategoryID;
         this.UserID = UserID;
         this.description = description;
@@ -54,14 +51,6 @@ public class Course {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public int getCategoryID() {

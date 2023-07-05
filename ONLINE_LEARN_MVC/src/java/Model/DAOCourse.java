@@ -68,11 +68,10 @@ public class DAOCourse extends ConnectDatabase {
                 int CourseID = result.getInt(1);
                 String CourseName = result.getString(2);
                 String image = result.getString(3);
-                double price = result.getDouble(4);
-                int CatID = result.getInt(5);
-                int UserID = result.getInt(6);
-                String description = result.getString(7);
-                Course course = new Course(CourseID, CourseName, image, price, CatID, UserID, description);
+                int CatID = result.getInt(4);
+                int UserID = result.getInt(5);
+                String description = result.getString(6);
+                Course course = new Course(CourseID, CourseName, image, CatID, UserID, description);
                 list.add(course);
             }
         } catch (SQLException ex) {
@@ -101,10 +100,9 @@ public class DAOCourse extends ConnectDatabase {
                     int CourseID = result.getInt(1);
                     String CourseName = result.getString(2);
                     String image = result.getString(3);
-                    double price = result.getDouble(4);
-                    int CategoryID = result.getInt(5);
-                    String description = result.getString(7);
-                    Course course = new Course(CourseID, CourseName, image, price, CategoryID, UserID, description);
+                    int CategoryID = result.getInt(4);
+                    String description = result.getString(6);
+                    Course course = new Course(CourseID, CourseName, image, CategoryID, UserID, description);
                     listCourse.add(course);
                 }
             } catch (SQLException ex) {
@@ -124,17 +122,22 @@ public class DAOCourse extends ConnectDatabase {
             if (result.next()) {
                 String CourseName = result.getString(2);
                 String image = result.getString(3);
-                double price = result.getDouble(4);
-                int CategoryID = result.getInt(5);
-                int UserID = result.getInt(6);
-                String description = result.getString(7);
-                Course course = new Course(CourseID, CourseName, image, price, CategoryID, UserID, description);
+                int CategoryID = result.getInt(4);
+                int UserID = result.getInt(5);
+                String description = result.getString(6);
+                Course course = new Course(CourseID, CourseName, image, CategoryID, UserID, description);
                 return course;
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+          DAOCourse dao = new DAOCourse();
+          List<Course> list = dao.getListCourse(1, 1, null, null);
+          System.out.println(list.isEmpty());
     }
 
 }

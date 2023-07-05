@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/Courses", method = RequestMethod.GET)
@@ -65,16 +65,17 @@ public class CoursesController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ModelAndView Index(HttpSession session, int CategoryID, int page, String properties, String flow) {
+    public ModelAndView Index(HttpSession session, Integer CategoryID, Integer page, String properties, String flow) {
         User user = (User) session.getAttribute("user");
         if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
-            int pageSelected = page == 0 ? 1 : page;
-            Map<String, Object> map = this.getData(CategoryID, pageSelected, properties, flow);
+            int pageSelected = page == null ? 1 : page;
+            int CatID = CategoryID == null ? 0 : CategoryID;
+            Map<String, Object> map = this.getData(CatID, pageSelected, properties, flow);
             if (user != null) {
                 List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
                 map.put("listEnroll", listEnroll);
             }
-            return new ModelAndView("Courses/Index", map);
+           return new ModelAndView("Courses/Index", map);
         }
         return new ModelAndView(ConstValue.REDIRECT + "/Error");
     }
