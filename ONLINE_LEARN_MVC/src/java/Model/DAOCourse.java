@@ -9,6 +9,26 @@ import java.util.*;
 
 public class DAOCourse extends ConnectDatabase {
 
+    private List<Course> getList(String sql) {
+        List<Course> list = new ArrayList<>();
+        ResultSet result = getData(sql);
+        try {
+            if (result.next()) {
+                int CourseID = result.getInt(1);
+                String CourseName = result.getString(2);
+                String image = result.getString(3);
+                int CategoryID = result.getInt(4);
+                int UserID = result.getInt(5);
+                String description = result.getString(6);
+                Course course = new Course(CourseID, CourseName, image, CategoryID, UserID, description);
+                list.add(course);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return list;
+    }
+
     public int getNumberPage(int CategoryID, int UserID) {
         String sql;
         // if not teacher course
@@ -43,7 +63,6 @@ public class DAOCourse extends ConnectDatabase {
     }
 
     public List<Course> getListCourse(int CategoryID, int page, String properties, String flow) {
-        List<Course> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Course]\n";
         // if not sort
         if (properties == null && flow == null) {
@@ -60,29 +79,14 @@ public class DAOCourse extends ConnectDatabase {
             sql = sql + "order by [" + properties + "] " + flow + "\n";
         }
         sql = sql + "	offset (" + ConstValue.MAX_COURSE_IN_PAGE + "*" + (page - 1) + ") row fetch next " + ConstValue.MAX_COURSE_IN_PAGE + " row only";
-        // get data
-        ResultSet result = getData(sql);
-        try {
-            // loop for traverse all row
-            while (result.next()) {
-                int CourseID = result.getInt(1);
-                String CourseName = result.getString(2);
-                String image = result.getString(3);
-                int CatID = result.getInt(4);
-                int UserID = result.getInt(5);
-                String description = result.getString(6);
-                Course course = new Course(CourseID, CourseName, image, CatID, UserID, description);
-                list.add(course);
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
+        List<Course> list = this.getList(sql);
         return list;
     }
 
     public List<Course> getListCourse(int UserID, String role) {
-        List<Course> listCourse = new ArrayList<>();
+        List<Course> listCourse;
         if (role.equals(ConstValue.ROLE_STUDENT)) {
+            listCourse = new ArrayList<>();
             DAOEnrollCourse daoEnroll = new DAOEnrollCourse();
             List<EnrollCourse> listEnroll = daoEnroll.getListEnrollCourse(UserID);
             for (EnrollCourse enroll : listEnroll) {
@@ -94,20 +98,7 @@ public class DAOCourse extends ConnectDatabase {
         } else {
             String sql = "SELECT * FROM [dbo].[Course]\n"
                     + "where [UserID] = " + UserID;
-            ResultSet result = getData(sql);
-            try {
-                if (result.next()) {
-                    int CourseID = result.getInt(1);
-                    String CourseName = result.getString(2);
-                    String image = result.getString(3);
-                    int CategoryID = result.getInt(4);
-                    String description = result.getString(6);
-                    Course course = new Course(CourseID, CourseName, image, CategoryID, UserID, description);
-                    listCourse.add(course);
-                }
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
-            }
+            listCourse = this.getList(sql);
         }
         return listCourse;
     }
@@ -115,29 +106,14 @@ public class DAOCourse extends ConnectDatabase {
     public Course getCourse(int CourseID) {
         String sql = "SELECT * FROM [dbo].[Course]\n"
                 + "where [CourseID] = " + CourseID;
-        // get data
-        ResultSet result = getData(sql);
-        try {
-            // if get data successful
-            if (result.next()) {
-                String CourseName = result.getString(2);
-                String image = result.getString(3);
-                int CategoryID = result.getInt(4);
-                int UserID = result.getInt(5);
-                String description = result.getString(6);
-                Course course = new Course(CourseID, CourseName, image, CategoryID, UserID, description);
-                return course;
-            }
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return null;
+        List<Course> list = this.getList(sql);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     public static void main(String[] args) {
-          DAOCourse dao = new DAOCourse();
-          List<Course> list = dao.getListCourse(1, 1, null, null);
-          System.out.println(list.isEmpty());
+        DAOCourse dao = new DAOCourse();
+        List<Course> list = dao.getListCourse(1, 1, null, null);
+        System.out.println(list.isEmpty());
     }
 
 }
