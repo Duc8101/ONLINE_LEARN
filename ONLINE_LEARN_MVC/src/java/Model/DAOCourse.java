@@ -13,7 +13,7 @@ public class DAOCourse extends ConnectDatabase {
         List<Course> list = new ArrayList<>();
         ResultSet result = getData(sql);
         try {
-            if (result.next()) {
+            while (result.next()) {
                 int CourseID = result.getInt(1);
                 String CourseName = result.getString(2);
                 String image = result.getString(3);
@@ -112,8 +112,8 @@ public class DAOCourse extends ConnectDatabase {
 
     public static void main(String[] args) {
         DAOCourse dao = new DAOCourse();
-        List<Course> list = dao.getListCourse(1, 1, null, null);
-        System.out.println(list.isEmpty());
+        List<Course> list = dao.getListCourse(0, 1, null, null);
+        System.out.println(list.size());
     }
 
 }

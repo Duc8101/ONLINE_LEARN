@@ -112,7 +112,7 @@
                         <div class="team-item bg-light">
                             <div class="overflow-hidden">
                                 <%
-                                    if (user.getImage().contains("img")) {
+                                    if (user.getImage().contains("http")) {
                                 %>
                                 <c:set var="image" value="<%=user.getImage()%>"></c:set>
                                 <img class="img-fluid" src="<c:url value="/resources/${image}"></c:url>" alt="">

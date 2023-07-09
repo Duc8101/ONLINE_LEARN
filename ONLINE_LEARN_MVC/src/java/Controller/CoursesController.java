@@ -75,7 +75,31 @@ public class CoursesController {
                 List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
                 map.put("listEnroll", listEnroll);
             }
-           return new ModelAndView("Courses/Index", map);
+            return new ModelAndView("Courses/Index", map);
+        }
+        return new ModelAndView(ConstValue.REDIRECT + "/Error");
+    }
+
+    @RequestMapping(value = "/Detail", method = RequestMethod.GET)
+    public ModelAndView Detail(HttpSession session, Integer CourseID) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
+            Course course = this.daoCourse.getCourse(CourseID);
+            // if not find course
+            if (course == null) {
+                return new ModelAndView(ConstValue.REDIRECT + "/Courses");
+            }
+            List<Lesson> list = this.daoLesson.getListLesson(CourseID);
+            Map<String, Object> map = new HashMap<>();
+            map.put("list", list);
+            map.put("course", course);
+            map.put("daoCourse", this.daoCourse);
+            map.put("daoUser", this.daoUser);
+            if (user != null) {
+                List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
+                map.put("listEnroll", listEnroll);
+            }
+            return new ModelAndView("Courses/Detail", map);
         }
         return new ModelAndView(ConstValue.REDIRECT + "/Error");
     }

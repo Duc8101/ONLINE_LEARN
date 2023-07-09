@@ -130,7 +130,7 @@
                                             <h5 class="mb-2">${course.getCourseName().length() <= 24 ? course.getCourseName() : course.getCourseName().substring(0, 24)}${course.getCourseName().length() <= 24 ? "" : "..."}</h5>
                                         </div>
                                         <div class="d-flex border-top">
-                                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${teacher.getFullName()}</small>
+                                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${teacher == null ? "" : teacher.getFullName()}</small>
                                         </div>
                                     </div>
                                 </div>
