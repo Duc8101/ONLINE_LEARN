@@ -41,7 +41,7 @@
             <!-- Spinner End -->
 
             <!-- Navbar Start -->
-        <jsp:include page="/WEB-INF/View/Shared/navbar.jsp"></jsp:include>
+        <jsp:include page="/View/Shared/navbar.jsp"></jsp:include>
             <!-- Navbar End -->
 
         <c:if test="${enroll != null}">
@@ -178,7 +178,7 @@
         <!-- Courses End -->
 
         <!-- Footer Start -->
-        <jsp:include page="/WEB-INF/View/Shared/footer.jsp"></jsp:include>
+        <jsp:include page="/View/Shared/footer.jsp"></jsp:include>
             <!-- Footer End -->
 
             <!-- Back to Top -->

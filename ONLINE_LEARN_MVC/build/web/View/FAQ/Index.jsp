@@ -46,7 +46,7 @@
         </head>
         <body>
             <!-- Navbar Start -->
-        <jsp:include page="/WEB-INF/View/Shared/navbar.jsp"></jsp:include>
+        <jsp:include page="/View/Shared/navbar.jsp"></jsp:include>
             <!-- Navbar End -->
 
             <br>
@@ -105,7 +105,7 @@
             <br>
 
             <section class="footer" style="margin-top: 8%">
-            <jsp:include page="/WEB-INF/View/Shared/footer.jsp"></jsp:include>
+            <jsp:include page="/View/Shared/footer.jsp"></jsp:include>
         </section>
     </body>
 </html>

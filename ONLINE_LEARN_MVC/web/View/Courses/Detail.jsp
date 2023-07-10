@@ -42,7 +42,7 @@
             <!-- Spinner End -->
 
             <!-- Navbar Start -->
-        <jsp:include page="/WEB-INF/View/Shared/navbar.jsp"></jsp:include>
+        <jsp:include page="/View/Shared/navbar.jsp"></jsp:include>
             <!-- Navbar End -->
 
             <div class="container-fluid py-5 wow fadeInDown row" data-wow-delay="0.1s">
@@ -126,7 +126,7 @@
         </div>
 
         <!-- Footer Start -->
-        <jsp:include page="/WEB-INF/View/Shared/footer.jsp"></jsp:include>
+        <jsp:include page="/View/Shared/footer.jsp"></jsp:include>
             <!-- Footer End -->
 
             <!-- Back to Top -->

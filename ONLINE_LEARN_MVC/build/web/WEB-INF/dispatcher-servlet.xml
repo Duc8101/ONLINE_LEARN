@@ -18,7 +18,7 @@
     <mvc:annotation-driven />
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/View/"
+          p:prefix="/View/"
           p:suffix=".jsp" />
 
     <mvc:resources mapping="/resources/**" location="/resources/"
