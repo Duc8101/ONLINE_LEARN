@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AboutController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String Index(HttpSession session) {
-        Boolean admin = (Boolean) session.getAttribute(ConstValue.ROLE_ADMIN);
+        Object admin = session.getAttribute(ConstValue.ROLE_ADMIN);
         if (admin == null) {
             return "About/Index";
         }

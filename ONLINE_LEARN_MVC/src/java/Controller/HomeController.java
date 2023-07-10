@@ -14,7 +14,7 @@ public class HomeController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String Index(HttpSession session) {
         User user = (User) session.getAttribute("user");
-        Boolean admin = (Boolean) session.getAttribute(ConstValue.ROLE_ADMIN);
+        Object admin = session.getAttribute(ConstValue.ROLE_ADMIN);
         if (user == null || admin == null) {
             return "Home/Index";
         }

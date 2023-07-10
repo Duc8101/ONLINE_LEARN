@@ -12,7 +12,7 @@ public class FAQController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String Index(HttpSession session) {
-        Boolean admin = (Boolean) session.getAttribute(ConstValue.ROLE_ADMIN);
+        Object admin = session.getAttribute(ConstValue.ROLE_ADMIN);
         if (admin == null) {
             return "FAQ/Index";
         }
