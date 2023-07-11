@@ -67,17 +67,18 @@ public class CoursesController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView Index(HttpSession session, Integer CategoryID, Integer page, String properties, String flow) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
-            int pageSelected = page == null ? 1 : page;
-            int CatID = CategoryID == null ? 0 : CategoryID;
-            Map<String, Object> map = this.getData(CatID, pageSelected, properties, flow);
-            if (user != null) {
-                List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
-                map.put("listEnroll", listEnroll);
-            }
-            return new ModelAndView("Courses/Index", map);
+        int pageSelected = page == null ? 1 : page;
+        int CatID = CategoryID == null ? 0 : CategoryID;
+        Map<String, Object> map = this.getData(CatID, pageSelected, properties, flow);
+        if (user != null) {
+            List<Course> listEnroll = this.daoCourse.getListCourse(user.getID(), user.getRoleName());
+            map.put("listEnroll", listEnroll);
         }
-        return new ModelAndView(ConstValue.REDIRECT + "/Error");
+        return new ModelAndView("Courses/Index", map);
+//        if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
+//
+//        }
+//        return new ModelAndView(ConstValue.REDIRECT + "/Error");
     }
 
     @RequestMapping(value = "/Detail", method = RequestMethod.GET)
