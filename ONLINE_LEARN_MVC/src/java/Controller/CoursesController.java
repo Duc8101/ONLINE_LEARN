@@ -6,6 +6,7 @@ import Model.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -81,10 +82,14 @@ public class CoursesController {
 //        return new ModelAndView(ConstValue.REDIRECT + "/Error");
     }
 
-    @RequestMapping(value = "/Detail", method = RequestMethod.GET)
-    public ModelAndView Detail(HttpSession session, Integer CourseID) {
+    @RequestMapping(value = "/Detail/{CourseID}", method = RequestMethod.GET)
+    public ModelAndView Detail(HttpSession session, @PathVariable("CourseID") Integer CourseID) {
         User user = (User) session.getAttribute("user");
         if (user == null || user.getRoleName().equals(ConstValue.ROLE_STUDENT)) {
+            // if not get value course id
+            if (CourseID == null) {
+                return new ModelAndView(ConstValue.REDIRECT + "/Courses");
+            }
             Course course = this.daoCourse.getCourse(CourseID);
             // if not find course
             if (course == null) {

@@ -96,7 +96,7 @@
                                                     <img class="img-fluid w-100" src="${course.getImage()}" alt="">
                                             </div> 
                                             <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                                <a href="<%=ConstValue.CONTEXT_PATH%>/Courses/Detail?CourseID=${course.getCourseID()}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
+                                                <a href="<%=ConstValue.CONTEXT_PATH%>/Courses/Detail/${course.getCourseID()}" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end"
                                                    style="border-radius: 30px ${listLesson.isEmpty() ? "" : "0 0"} 30px;">Read More
                                                 </a>
                                                 <!-- if login -->

@@ -1,4 +1,3 @@
-
 package Controller;
 
 import Const.ConstValue;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "/About", method = RequestMethod.GET)
 public class AboutController {
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String Index(HttpSession session) {
         Object admin = session.getAttribute(ConstValue.ROLE_ADMIN);
